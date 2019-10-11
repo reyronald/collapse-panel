@@ -1,0 +1,39 @@
+.CollapsePanel {
+  .header {
+    cursor: pointer;
+    background-color: white;
+    padding: 22px 27px 22px 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .header-content {
+      line-height: 1.4;
+      letter-spacing: normal;
+      color: black;
+
+      margin: 0;
+      padding: 0;
+      width: 100%;
+    }
+
+    .header-toggle-button {
+      border: none;
+      background: none;
+      padding: 0;
+      color: #5db9d1;
+      margin-left: 5%;
+    }
+  }
+
+  .collapsible {
+    overflow: hidden;
+    transition: height 0.15s cubic-bezier(0.645, 0.045, 0.355, 1);
+
+    .content {
+      border-top: 1px solid #e9eaf3;
+      background-color: white;
+      padding: 17px 48px;
+    }
+  }
+}
