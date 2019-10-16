@@ -76,7 +76,6 @@ function CollapseTransition({
   children: React.ReactNode;
 }): React.ReactElement {
   const heightRef = React.useRef<number>(0);
-  const rafRef = React.useRef<number>();
 
   return (
     <Transition
@@ -90,17 +89,25 @@ function CollapseTransition({
       onEnter={node => {
         heightRef.current = node.offsetHeight;
         node.style.height = "0";
+        // Force synchronously layout reflow/repaint,
+        // before going into the next lifecycle,
+        // a.k.a "layout thrashing"
+        // eslint-disable-next-line no-unused-expressions
+        node.scrollTop;
       }}
       onEntering={node => {
-        rafRef.current = requestAnimationFrame(() => {
-          node.style.height = `${heightRef.current}px`;
-        });
+        node.style.height = `${heightRef.current}px`;
+      }}
+      onEntered={node => {
+        node.style.height = "";
       }}
       onExit={node => {
-        if (rafRef.current) {
-          cancelAnimationFrame(rafRef.current);
-        }
-        node.style.height = "0";
+        node.style.height = `${node.offsetHeight}px`;
+      }}
+      onExiting={node => {
+        requestAnimationFrame(() => {
+          node.style.height = "0";
+        });
       }}
     >
       {children}
