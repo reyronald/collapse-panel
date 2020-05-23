@@ -1,18 +1,34 @@
 import * as React from "react";
 import classnames from "classnames";
-import { Transition } from "react-transition-group";
 
-import "./CollapsePanel.scss";
+import { usePrevious } from "../../usePrevious";
+import "../../styles.scss";
+
+import { CollapseTransitionCSS } from "../../components/CollapseTransitionCSS";
+
+export default function App() {
+  const [expanded, setExpanded] = React.useState(false);
+
+  return (
+    <CollapsePanelCSS
+      expanded={expanded}
+      onClickHeader={() => setExpanded(prevVal => !prevVal)}
+      header={<h2>Hello CodeSandbox</h2>}
+      content={<h3>Start editing to see some magic happen!</h3>}
+    />
+  );
+}
 
 export type Props = React.HTMLAttributes<HTMLElement> & {
   expanded: boolean;
   onClickHeader: React.MouseEventHandler<HTMLElement>;
   header: React.ReactNode;
   content: React.ReactNode;
+  footer?: React.ReactNode;
   className?: string;
 };
 
-export default function CollapsePanel({
+export function CollapsePanelCSS({
   expanded,
   onClickHeader,
   header,
@@ -30,6 +46,8 @@ export default function CollapsePanel({
       ref={headerNodeRef}
       className={classnames("CollapsePanel", className)}
     >
+      <h1>CollapseTransitionCSS</h1>
+
       <header className="header" onClick={onClickHeader}>
         <div className="header-content">{header}</div>
 
@@ -47,11 +65,14 @@ export default function CollapsePanel({
         </button>
       </header>
 
-      <CollapseTransition expanded={expanded}>
+      <CollapseTransitionCSS expanded={expanded}>
         <div
           data-testid="collapsible"
           aria-expanded={expanded}
           className="collapsible"
+          style={{
+            transition: "height 1.15s cubic-bezier(0.645, 0.045, 0.355, 1)"
+          }}
           onTransitionEnd={() => {
             if (!prevExpanded && expanded) {
               window.scrollTo({
@@ -63,64 +84,9 @@ export default function CollapsePanel({
         >
           <div className="content">{content}</div>
         </div>
-      </CollapseTransition>
+      </CollapseTransitionCSS>
+
+      <p>Content below the panel</p>
     </section>
   );
-}
-
-function CollapseTransition({
-  expanded,
-  children
-}: {
-  expanded: boolean;
-  children: React.ReactNode;
-}): React.ReactElement {
-  const heightRef = React.useRef<number>(0);
-
-  return (
-    <Transition
-      appear
-      unmountOnExit
-      in={expanded}
-      timeout={null}
-      addEndListener={(node, done) =>
-        node.addEventListener("transitionend", done, false)
-      }
-      onEnter={node => {
-        heightRef.current = node.offsetHeight;
-        node.style.height = "0";
-        // Force synchronously layout reflow/repaint,
-        // before going into the next lifecycle,
-        // a.k.a "layout thrashing"
-        // eslint-disable-next-line no-unused-expressions
-        node.scrollTop;
-      }}
-      onEntering={node => {
-        node.style.height = `${heightRef.current}px`;
-      }}
-      onEntered={node => {
-        node.style.height = "";
-      }}
-      onExit={node => {
-        node.style.height = `${node.offsetHeight}px`;
-      }}
-      onExiting={node => {
-        requestAnimationFrame(() => {
-          node.style.height = "0";
-        });
-      }}
-    >
-      {children}
-    </Transition>
-  );
-}
-
-function usePrevious<T>(value: T): T | void {
-  const ref = React.useRef<T | void>();
-
-  React.useEffect(() => {
-    ref.current = value;
-  }, [value]);
-
-  return ref.current;
 }

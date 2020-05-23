@@ -1,15 +1,15 @@
 import * as React from "react";
 import { render, cleanup, fireEvent } from "@testing-library/react";
 
-import CollapsePanel from "./CollapsePanel";
+import { CollapsePanelCSS } from "./CollapsePanelCSS";
 
-describe("CollapsePanel", () => {
+describe("CollapsePanelCSS", () => {
   afterEach(cleanup);
 
   it("should render as expected when expanded=true", () => {
     const onClickHeader = jest.fn();
     const { container, getByLabelText, getByTestId, getByText } = render(
-      <CollapsePanel
+      <CollapsePanelCSS
         expanded={true}
         onClickHeader={onClickHeader}
         header={<h1>Header Node</h1>}
@@ -34,7 +34,7 @@ describe("CollapsePanel", () => {
   it("should render as expected when expanded=false", () => {
     const onClickHeader = jest.fn();
     const { container, getByLabelText, queryByTestId } = render(
-      <CollapsePanel
+      <CollapsePanelCSS
         expanded={false}
         onClickHeader={onClickHeader}
         header={<h1>Header Node</h1>}
