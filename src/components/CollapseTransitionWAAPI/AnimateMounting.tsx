@@ -12,7 +12,7 @@ export function AnimateMounting({ show, children, animate }: Props) {
   const elRef = React.useRef<HTMLDivElement>(null);
   const animateCallback = React.useRef(animate);
 
-  const [status, setStatus] = React.useState<"entering" | "exiting" | "exited">(
+  const [status, setStatus] = React.useState<"entering" | "exited">(
     show ? "entering" : "exited"
   );
 
