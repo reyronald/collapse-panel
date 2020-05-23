@@ -35,7 +35,7 @@ function CollapsePanelWAAPI({ expanded, onClickHeader, header, content }) {
               "fa-chevron-down": !expanded
             })}
           >
-            {expanded ? "👆" : "👇"}
+            {expanded ? "(expanded) 👆" : "(collapsed) 👇"}
           </i>
         </button>
       </header>

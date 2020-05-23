@@ -5,14 +5,14 @@ const supportsWAAPI = "animate" in document.body;
 type Props = {
   show: boolean;
   children: React.ReactNode;
-  animate(args: { el: HTMLDivElement }): () => Animation;
+  animate(args: { el: HTMLDivElement; show: boolean }): Animation;
 };
 
 export function AnimateMounting({ show, children, animate }: Props) {
   const elRef = React.useRef<HTMLDivElement>(null);
   const animateCallback = React.useRef(animate);
 
-  const [status, setStatus] = React.useState<"entering" | "exited">(
+  const [status, setStatus] = React.useState<"entering" | "exiting" | "exited">(
     show ? "entering" : "exited"
   );
 
@@ -23,18 +23,19 @@ export function AnimateMounting({ show, children, animate }: Props) {
       return;
     }
 
-    if (show) {
-      const animateExit = animateCallback.current({ el });
+    const animation = animateCallback.current({ el, show });
 
-      return () => {
-        const exitAnimation = animateExit();
-        exitAnimation.onfinish = () => {
-          console.log("finish exit anmation");
-
-          setStatus("exited");
-        };
+    if (!show) {
+      animation.onfinish = () => {
+        setStatus("exited");
       };
     }
+
+    return () => {
+      if (!show) {
+        animation.cancel();
+      }
+    };
   }, [show, status]);
 
   React.useEffect(() => {

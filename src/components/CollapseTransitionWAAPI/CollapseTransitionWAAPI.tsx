@@ -11,23 +11,17 @@ export function CollapseTransitionWAAPI({ show, children }: Props) {
     <AnimateMounting
       show={show}
       children={children}
-      animate={({ el }) => {
+      animate={({ el, show }) => {
         const maxHeight = el.offsetHeight + "px";
-        const duration = 1500;
+        const duration = 150;
         const easing = "cubic-bezier(0.645, 0.045, 0.355, 1)";
         const options = { duration, easing };
 
-        el.animate([{ maxHeight: 0 }, { maxHeight }], options);
-
-        return () => {
-          console.log("runing exit anmation");
-          const animation = el.animate(
-            [{ maxHeight }, { maxHeight: 0 }],
-            options
-          );
-
-          return animation;
-        };
+        if (show) {
+          return el.animate([{ maxHeight: 0 }, { maxHeight }], options);
+        } else {
+          return el.animate([{ maxHeight }, { maxHeight: 0 }], options);
+        }
       }}
     />
   );
