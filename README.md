@@ -5,7 +5,7 @@ Here you will find two different implementations of a "
 Transitions with `react-transition-group`, and another one
 leveraging the Web Animations API
 
-Open a file in the examples directory within CodeSandbox at
+Open a file in the pages directory within CodeSandbox at
 https://codesandbox.io/s/github/reyronald/collapse-panel
 and then toggle the "Current Module View" in the upper-right of the
 browser preview.

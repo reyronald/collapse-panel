@@ -1,7 +1,5 @@
 import React from "react";
 
-const supportsWAAPI = "animate" in document.body;
-
 export type Props = {
   show: boolean;
   children: React.ReactNode;
@@ -15,6 +13,8 @@ export function AnimateMounting({ show, children, animate }: Props) {
   const [status, setStatus] = React.useState<"entering" | "exited">(
     show ? "entering" : "exited"
   );
+
+  const supportsWAAPI = "animate" in document.body;
 
   React.useLayoutEffect(() => {
     const el = elRef.current;
@@ -36,13 +36,13 @@ export function AnimateMounting({ show, children, animate }: Props) {
         animation.cancel();
       }
     };
-  }, [show, status]);
+  }, [supportsWAAPI, show, status]);
 
   React.useEffect(() => {
     if (supportsWAAPI && status === "exited" && show) {
       setStatus("entering");
     }
-  }, [show, status]);
+  }, [supportsWAAPI, show, status]);
 
   if ((supportsWAAPI && status === "exited") || (!supportsWAAPI && !show)) {
     return null;

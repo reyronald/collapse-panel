@@ -16,7 +16,7 @@ function App() {
       </p>
 
       <p>
-        Open a file in the examples directory within CodeSandbox at{" "}
+        Open a file in the pages directory within CodeSandbox at{" "}
         <a href="https://codesandbox.io/s/github/reyronald/collapse-panel">
           https://codesandbox.io/s/github/reyronald/collapse-panel
         </a>{" "}
