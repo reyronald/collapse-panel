@@ -2,9 +2,11 @@ import * as React from "react";
 import classnames from "classnames";
 
 import { usePrevious } from "../../usePrevious";
-import "../../styles.scss";
 
 import { CollapseTransitionCSS } from "../../components/CollapseTransitionCSS";
+
+import "../../styles.scss";
+import "../../CollapsePanel.scss";
 
 export default function App() {
   const [expanded, setExpanded] = React.useState(false);
@@ -60,7 +62,7 @@ export function CollapsePanelCSS({
               "fa-chevron-down": !expanded
             })}
           >
-            {expanded ? "👆" : "👇"}
+            {expanded ? "(expanded) 👆" : "(collapsed) 👇"}
           </i>
         </button>
       </header>
@@ -71,7 +73,7 @@ export function CollapsePanelCSS({
           aria-expanded={expanded}
           className="collapsible"
           style={{
-            transition: "height 1.15s cubic-bezier(0.645, 0.045, 0.355, 1)"
+            transition: "height 0.15s cubic-bezier(0.645, 0.045, 0.355, 1)"
           }}
           onTransitionEnd={() => {
             if (!prevExpanded && expanded) {

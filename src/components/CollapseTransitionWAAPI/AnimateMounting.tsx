@@ -2,7 +2,7 @@ import React from "react";
 
 const supportsWAAPI = "animate" in document.body;
 
-type Props = {
+export type Props = {
   show: boolean;
   children: React.ReactNode;
   animate(args: { el: HTMLDivElement; show: boolean }): Animation;
